@@ -3,6 +3,7 @@
 import praw
 from datetime import datetime
 import time
+import argparse
 
 reddit = praw.Reddit(
         user_agent = 'python3.7:personal_use_script:01 (by /u/apigban)',
@@ -65,18 +66,46 @@ def askDates():
     tsList = sorted(tsList, reverse=True, key=int)
     print(tsList)
 
-
     return tsList
 
-#def dateRank():
-#    num = [date1, date2]
-#    num = num.sort(key=int)
-#    print(num)
 
-print(askDates())
+def askSubreddit():
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('Subreddit', help='What is the Subreddit to fetch submissions from', type=str)
+    subR = parser.parse_args()
+    subR = subR.Subreddit
+    return subR
+
+
+def fetchParam():
+
+    tsList = askDates()
+    subR = askSubreddit()
+
+    paramList = [subR, tsList[0], tsList[1]]
+    #print(paramList, subR, tsList)
+    return paramList
+
+
+
+def fetchPosts():
+
+    paramList = fetchParam()
+    print(paramList)
+
+
+
+    for submission in reddit.subreddit('\'' + paramList[0] + '\'').submission(paramList[1], paramList[2]):
+        print(submission.ups)
+
+#fetchParam()
+fetchPosts()
+
+
 
 #print(dateRank(askDates()))
-print(tsList + 'awaw')
+#print(fetchSubmissions())
 #for submission in posts_hot:
 #    print(submission.author.comments)
 #    print(dir(submission.author.comments.top))
