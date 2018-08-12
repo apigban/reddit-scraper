@@ -1,0 +1,26 @@
+#!/usr/bin/env python3.7
+
+import praw
+
+reddit = praw.Reddit(client_id = 'NCfhYUhP-fGCBw',
+                      client_secret = 'xy1trVfcAjKJuZ3hD3nJ5mhH2qM',
+                      username = 'senti_bot_apigban',
+                      password = 'wuZRuv4XwpyLcYVizt3H',
+                      user_agent = 'python3.7:personal_use_script:01 (by /u/apigban)'
+                      )
+
+subreddit = reddit.subreddit('dubai')
+
+for comment in subreddit.stream.comments():
+    try:
+        parent_id = str(comment.parent())
+
+        original = reddit.comment(parent_id)
+        print('Parent:')
+        print(original.body)
+
+        print('Reply:')
+        print(comment.body)
+
+    except praw.exceptions.PRAWException as e:
+        pass
