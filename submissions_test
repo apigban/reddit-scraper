@@ -2,6 +2,7 @@
 
 import praw
 from datetime import datetime
+import time
 
 reddit = praw.Reddit(
         user_agent = 'python3.7:personal_use_script:01 (by /u/apigban)',
@@ -26,16 +27,24 @@ def validateDate(d):
         print('\n\nValue Error: \n\nMonth Range is 1 to 12 \nDay Range is 1 to 28\n\nPlease try again with the correct values')
         return False
 
-def askDates():
-    isValidDate = False
 
+
+def dateToTimeStamp(d):
+    tStamp = datetime.strptime(d, '%Y|%m|%d').date()
+    tStamp = time.mktime(tStamp.timetuple())
+    return tStamp
+
+
+
+def askDates():
+
+    isValidDate = False
     while not isValidDate:
         year1 = input('Enter YEAR for Date1 in YYYY     ')
         month1 = input('Enter MONTH for Date1 in MM       ')
         day1 = input('Enter DAY for Date1 in DD       ')
         date1 = year1 + '|' + month1 + '|' + day1
 
-        #print(validateDate(date1))
         if validateDate(date1) == True:
             isValidDate = True
 
@@ -49,13 +58,25 @@ def askDates():
         if validateDate(date2) == True:
             isValidDate = True
 
-    return date1, date2
+    date1 = int(dateToTimeStamp(date1))
+    date2 = int(dateToTimeStamp(date2))
+
+    tsList = [date1, date2]
+    tsList = sorted(tsList, reverse=True, key=int)
+    print(tsList)
+
+
+    return tsList
+
+#def dateRank():
+#    num = [date1, date2]
+#    num = num.sort(key=int)
+#    print(num)
 
 print(askDates())
 
-
-
-
+#print(dateRank(askDates()))
+print(tsList + 'awaw')
 #for submission in posts_hot:
 #    print(submission.author.comments)
 #    print(dir(submission.author.comments.top))
