@@ -2,12 +2,10 @@
 
 import praw
 
-reddit = praw.Reddit(client_id = 'NCfhYUhP-fGCBw',
-                      client_secret = 'xy1trVfcAjKJuZ3hD3nJ5mhH2qM',
-                      username = 'senti_bot_apigban',
-                      password = 'wuZRuv4XwpyLcYVizt3H',
-                      user_agent = 'python3.7:personal_use_script:01 (by /u/apigban)'
-                      )
+reddit = praw.Reddit(
+         user_agent = 'python3.7:personal_use_script:01 (by /u/apigban)',
+         site_name = 'bot1'
+         )
 
 subreddit = reddit.subreddit('dubai')
 
