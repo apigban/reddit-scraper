@@ -1,13 +1,8 @@
 #!/usr/bin/env python3.7
 
-from psaw import PushshiftAPI
 from datetime import datetime
 import argparse
 import time
-
-
-
-psapi = PushshiftAPI()
 
 
 def validDate(dateInput):
@@ -17,9 +12,11 @@ def validDate(dateInput):
         msg = "Not a valid date: '{0}'.".format(dateInput)
         raise argparse.ArgumentTypeError(msg)
 
+
 def toUnixTime(dateObject):
     unixTime = time.mktime(dateObject.timetuple())
     return unixTime
+
 
 def fetchInput():
     argList = []
@@ -62,6 +59,15 @@ def fetchInput():
             choices = ['submissions','comments','author'],
             default = 'submissions',
             required = True)
+    parser.add_argument(
+             '--limit',
+             '-l',
+             #action = 'store_const',
+             type = int,
+             help = 'End Date - YYYYMMDD',
+             required = False,
+             default = 1
+             )
 
     args = parser.parse_args()
 
@@ -70,16 +76,10 @@ def fetchInput():
     argList.append(args.content)
     argList.append(toUnixTime(args.initial))
     argList.append(toUnixTime(args.final))
+    argList.append(args.limit)
 
-    print(args.initial)
-    print(argList)
-    return args
+    return argList
 
 
-#submissions = psapi.search_submissions(limit=10)
-#results = list(submissions)
 fetchInput()
-#print(results)
 
-#askSubreddit()
-#print(dir(topPosts))
