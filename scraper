@@ -4,17 +4,38 @@ from psaw import PushshiftAPI
 from getInfo import fetchInput
 
 
-psapi = PushshiftAPI()
+def fileOut(results):
+    with open("out.txt", "a") as file:
+        file.writelines(results)
 
 
-argList = fetchInput()
 
-results = list(psapi.search_submissions(
-    subreddit = argList[0],
-    initial = argList[2],
-    final = argList[3],
-    limit = argList[4]
-    )
-    )
+    #psapi = PushshiftAPI()
+#argList = fetchInput()
 
-print(results)
+
+def scraperMain():
+
+    counter = 0
+    argList = fetchInput()
+    psapi = PushshiftAPI()
+
+    while (counter < argList[4]):
+        result = list(psapi.search_submissions(
+            subreddit = argList[0],
+            initial = argList[2],
+            final = argList[3],
+            limit = 1
+            )
+            )
+        counter += 1
+        fileOut(str(result))
+
+    print("RESULTS:  \n", result)
+    print(f"\n\nCOUNTER: {counter}")
+    print("Limit:  ", argList[4])
+    return result
+
+scraperMain()
+#print(results)
+#print(argList)
