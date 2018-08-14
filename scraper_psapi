@@ -1,0 +1,73 @@
+#!/usr/bin/env python3.7
+
+from getInfo import fetchInput
+
+
+def fileOut(result):
+    with open("out.txt", "a") as file:
+        file.writelines(result)
+
+def urlConstructor(subreddit, contentType, initial, final, voteSort)
+
+    baseURL = "https://api.pushshift.io/reddit/search/"
+
+    if contentType == "submissions"
+        apiURL = baseURL + "submission/?"
+
+    elif contentType == "comments"
+        apiURL = baseURL + "comment/?"
+
+    elif contentType == "both"
+        apiURL = baseURL + "all/?" + "q=" + subreddit
+
+    else:
+        print("Default Input: Submissions\nUsing Submissions")
+
+def pullPSData(subreddit=None, contentType=None, initial=None, final=None, limit=None, voteSort=None):
+
+    argList = fetchInput()
+
+    urlConstructor(argList[0], argList[1], argList[2], argList[3], argList[5])
+
+
+    #url = "https://api.pushshift.io/reddit/search/"
+
+    https://api.pushshift.io/reddit/search/comment/?q=science&subreddit=askscience
+
+
+    print(result)
+
+pullPSData(fetchInput)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

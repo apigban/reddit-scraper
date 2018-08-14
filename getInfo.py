@@ -56,7 +56,7 @@ def fetchInput():
             '--content',
             type = str,
             help = 'Content to retrieve from reddit',
-            choices = ['submissions','comments','author'],
+            choices = ['submissions','comments','both'],
             default = 'submissions',
             required = True)
     parser.add_argument(
@@ -64,20 +64,31 @@ def fetchInput():
              '-l',
              #action = 'store_const',
              type = int,
-             help = 'End Date - YYYYMMDD',
+             help = 'How many submissions or comments are we going to retrieve',
              required = False,
-             default = 1
+             default = 100
              )
+    parser.add_argument(
+            '--voteSort',
+            '-b',
+            #action = 'store_const',
+            type = str,
+            help='TOP to BOTTOM= descending. Defaults to descending',
+            required = False,
+            default = 'descending',
+            choices = ['ascending', 'descending']
+            )
 
     args = parser.parse_args()
 
     #Update argList with data from argparse
     argList.append(args.subreddit)
     argList.append(args.content)
-    argList.append(toUnixTime(args.initial))
-    argList.append(toUnixTime(args.final))
+    argList.append(int(toUnixTime(args.initial)))
+    argList.append(int(toUnixTime(args.final)))
     argList.append(args.limit)
-
+    argList.append(args.voteSort)
+    print(argList)
     return argList
 
 
