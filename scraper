@@ -1,0 +1,6 @@
+#!/usr/bin/env python3.7
+
+from psaw import PushshiftAPI
+import getInfo
+
+fetchInput()
