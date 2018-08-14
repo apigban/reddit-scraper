@@ -4,9 +4,9 @@ from psaw import PushshiftAPI
 from getInfo import fetchInput
 
 
-def fileOut(results):
+def fileOut(result):
     with open("out.txt", "a") as file:
-        file.writelines(results)
+        file.writelines(result)
 
 
 
@@ -29,10 +29,12 @@ def scraperMain():
             )
             )
         counter += 1
-        fileOut(str(result))
+        fileOut(str(result) + '\n')
+        result = None
+        print(f"\n\nCOUNTER: {counter}")
 
-    print("RESULTS:  \n", result)
-    print(f"\n\nCOUNTER: {counter}")
+    #print("RESULTS:  \n", result)
+    #print(f"\n\nCOUNTER: {counter}")
     print("Limit:  ", argList[4])
     return result
 
