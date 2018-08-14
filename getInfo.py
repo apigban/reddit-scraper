@@ -103,7 +103,7 @@ def fetchInput():
     argList.append(args.voteSort)
     argList[5] = voteSorter(argList[5])
 
-    print(argList)
+   #print(argList)
     return argList
 
 

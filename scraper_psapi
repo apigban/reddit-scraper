@@ -7,37 +7,33 @@ def fileOut(result):
     with open("out.txt", "a") as file:
         file.writelines(result)
 
-def urlConstructor(subreddit, contentType, initial, final, voteSort)
+def urlConstructor(subreddit, contentType, initial, final, voteSort):
 
     baseURL = "https://api.pushshift.io/reddit/search/"
+    apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}".format(contentType, subreddit, initial, final, voteSort)
+    print("\n" + 5*"-" + f"Loading URL:  {apiURL}\n")
 
-    if contentType == "submissions"
-        apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}".format(contentType, subreddit, initial, final, voteSort)
-        print(f"Loading URL:  {apiURL}")
-        return apiURL
 
-    elif contentType == "comments"
-        apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}".format(contentType, subreddit, initial, final, voteSort)
 
-    elif contentType == "both"
-        apiURL = baseURL + "all/?" + "q=" + subreddit
-
-    else:
-        print("Default Input: Submissions\nUsing Submissions")
+#    if contentType == "submissions"
+#        apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}".format(contentType, subreddit, initial, final, voteSort)
+#        print(f"Loading URL:  {apiURL}")
+#        return apiURL
+#
+#    elif contentType == "comments"
+#        apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}".format(contentType, subreddit, initial, final, voteSort)
+#
+#    elif contentType == "all"
+#        apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}".format(contentType, subreddit, initial, final, voteSort)
+#
+#    else:
+#        print("Default Input: Submissions\nUsing Submissions")
 
 def pullPSData(subreddit=None, contentType=None, initial=None, final=None, limit=None, voteSort=None):
 
     argList = fetchInput()
 
-    urlConstructor(argList[0], argList[1], argList[2], argList[3], argList[5])
-
-
-    #url = "https://api.pushshift.io/reddit/search/"
-
-    https://api.pushshift.io/reddit/search/comment/?q=science&subreddit=askscience
-
-
-    print(result)
+    apiURL = urlConstructor(argList[0], argList[1], argList[2], argList[3], argList[5])
 
 pullPSData(fetchInput)
 
