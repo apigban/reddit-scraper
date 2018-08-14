@@ -18,6 +18,17 @@ def toUnixTime(dateObject):
     return unixTime
 
 
+def voteSorter(voteSort):
+    if voteSort == "descending":
+        voteSort = "desc"
+        print("\n" + 5*"-" + f"{voteSort} Sort\n")
+        return voteSort
+    else:
+       voteSort = "asc"
+       print("\n" + 5*"-" + f"{voteSort} Sort\n")
+       return voteSort
+
+
 def fetchInput():
     argList = []
 
@@ -55,8 +66,8 @@ def fetchInput():
             '-c',
             '--content',
             type = str,
-            help = 'Content to retrieve from reddit',
-            choices = ['submissions','comments','both'],
+            help = 'Content to retrieve from reddit. Default: submissions \n For both submissions and comments use -all- ',
+            choices = ['submissions','comments','all'],
             default = 'submissions',
             required = True)
     parser.add_argument(
@@ -87,7 +98,11 @@ def fetchInput():
     argList.append(int(toUnixTime(args.initial)))
     argList.append(int(toUnixTime(args.final)))
     argList.append(args.limit)
+
+    #Update voteSort field to comply with Pushshift api requirement
     argList.append(args.voteSort)
+    argList[5] = voteSorter(argList[5])
+
     print(argList)
     return argList
 

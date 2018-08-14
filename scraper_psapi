@@ -12,10 +12,12 @@ def urlConstructor(subreddit, contentType, initial, final, voteSort)
     baseURL = "https://api.pushshift.io/reddit/search/"
 
     if contentType == "submissions"
-        apiURL = baseURL + "submission/?"
+        apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}".format(contentType, subreddit, initial, final, voteSort)
+        print(f"Loading URL:  {apiURL}")
+        return apiURL
 
     elif contentType == "comments"
-        apiURL = baseURL + "comment/?"
+        apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}".format(contentType, subreddit, initial, final, voteSort)
 
     elif contentType == "both"
         apiURL = baseURL + "all/?" + "q=" + subreddit
