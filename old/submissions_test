@@ -1,0 +1,104 @@
+#!/usr/bin/env python3.7
+
+import praw
+from datetime import datetime
+import time
+import argparse
+
+
+def validateDate(d):
+    try:
+        if len(d) == 10:
+            datetime.strptime(d, '%Y|%m|%d')
+            print(f'\n{d} is a valid date\n')
+            return True
+        else:
+            print('\n\nPlease Try Again using the correct format\n\nYYYY\nMM\nDD\n\n')
+            return False
+
+    except ValueError:
+        print('\n\nValue Error: \n\nMonth Range is 1 to 12 \nDay Range is 1 to 28\n\nPlease try again with the correct values')
+        return False
+
+
+
+def dateToTimeStamp(d):
+    tStamp = datetime.strptime(d, '%Y|%m|%d').date()
+    tStamp = time.mktime(tStamp.timetuple())
+    return tStamp
+
+
+
+def askDates():
+
+    isValidDate = False
+    while not isValidDate:
+        year1 = input('Enter YEAR for Date1 in YYYY     ')
+        month1 = input('Enter MONTH for Date1 in MM       ')
+        day1 = input('Enter DAY for Date1 in DD       ')
+        date1 = year1 + '|' + month1 + '|' + day1
+
+        if validateDate(date1) == True:
+            isValidDate = True
+
+    isValidDate = False
+    while not isValidDate:
+        year2 = input('Enter YEAR for Date2 in YYYY     ')
+        month2 = input('Enter MONTH for Date2 in MM       ')
+        day2 = input('Enter DAY for Date2 in DD       ')
+        date2 = year2 + '|' + month2 + '|' + day2
+
+        if validateDate(date2) == True:
+            isValidDate = True
+
+    date1 = int(dateToTimeStamp(date1))
+    date2 = int(dateToTimeStamp(date2))
+
+    tsList = [date1, date2]
+    tsList = sorted(tsList, reverse=True, key=int)
+    print(tsList)
+
+    return tsList
+
+
+def askSubreddit():
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('Subreddit', help='What is the Subreddit to fetch submissions from', type=str)
+    subR = parser.parse_args()
+    subR = subR.Subreddit
+    return subR
+
+
+def fetchParam():
+
+    tsList = askDates()
+    subR = askSubreddit()
+
+    paramList = [subR, tsList[0], tsList[1]]
+    print(paramList, subR, tsList)
+    return paramList
+
+
+
+def fetchPosts():
+
+    #paramList = fetchParam()
+    #print(paramList)
+
+    for submission in topPosts:
+        print(submission.title)
+
+reddit = praw.Reddit(
+        user_agent = 'python3.7:personal_use_script:01 (by /u/apigban)',
+        site_name = 'bot1'
+        )
+
+subreddit = reddit.subreddit('dubai')
+
+topPosts = subreddit.top(limit=5)
+
+
+fetchPosts()
+#askSubreddit()
+#print(dir(topPosts))
