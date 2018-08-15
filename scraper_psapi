@@ -2,6 +2,7 @@
 
 from getInfo import fetchInput
 import requests
+import json
 
 
 def fileOut(result):
@@ -11,7 +12,7 @@ def fileOut(result):
 def urlConstructor(subreddit, contentType, initial, final, voteSort):
 
     baseURL = "https://api.pushshift.io/reddit/search/"
-    apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}&metadata=True".format(contentType, subreddit, initial, final, voteSort)
+    apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}&metadata=True&pretty=True".format(contentType, subreddit, initial, final, voteSort)
     print("\n" + 5*"-" + f"Loading URL:  {apiURL}\n")
     return apiURL
 
@@ -39,41 +40,10 @@ def pullPSData(subreddit=None, contentType=None, initial=None, final=None, limit
 
     apiURL = urlConstructor(argList[0], argList[1], argList[2], argList[3], argList[5])
     #print(apiURL)
-    req = requests.request('GET', apiURL)
-    req=req.json()
-    print(req)
+    req = json.loads(requests.get(apiURL).text)
+    #req = req.json()
+    #req = json.loads(req)
+    fileOut(str(req))
+    #print(req)
 
-pullPSData(fetchInput)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+pullPSData(fetchInput())
