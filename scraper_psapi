@@ -5,8 +5,8 @@ import requests
 import json
 import time
 import logging
-#import logging.config
 import logging.handlers
+import setupLog
 
 def fileOut(subreddit, contentType, response):
     timeStr = time.strftime("%Y%m%d")
@@ -21,7 +21,9 @@ def urlConstructor(subreddit, contentType, initial, final, voteSort):
 
     baseURL = "https://api.pushshift.io/reddit/search/"
     apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}&metadata=True".format(contentType, subreddit, initial, final, voteSort)
-    print("\n" + 5*"-" + f"Loading URL:  {apiURL}\n")
+
+    logger = setupLog.setupLogger('urlConstructor', 'urlConstructor.log')
+    logger.warning("\n" + 5*"-" + f"Loading URL:  {apiURL}\n")
     return apiURL
 
 
@@ -48,59 +50,22 @@ def scraper(subreddit=None, contentType=None, initial=None, final=None, limit=No
 
     apiURL = urlConstructor(argList[0], argList[1], argList[2], argList[3], argList[5])
     response = requests.get(apiURL)
-    logger('info', "API Response")
     jsonData = response.json()
-    #logger.info(5*"-", "Decoding json object")
-    #print(5*"-" + "API response processed..." "\n" + 5*"-" + "jsonData Loaded to memory...")
     fileOut(argList[0], argList[1], jsonData)
-    #print(5*"-" + "API response processed..." "\n" + 5*"-" + "jsonData Loaded to memory...")
 
-
-def setup_logger(name, logFileName, level=logging.INFO, detail='simple'):
-
-    simpleFormatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    complexFormatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(module)s : %(lineno)d - %(message)s')
-
-    handler = logging.handlers.RotatingFileHandler(
-            logFileName,
-            maxBytes = 50000,
-            backupCount = 5)
-
-    if detail == 'simple':
-        return handler.setFormatter(simpleFormatter)
-    else:
-        return handler.setFormatter(complexFormatter)
-
-    logger = logging.getlogger(name)
-    logger.setLevel(level)
-    logger.addHandler(handler)
-
-    return logger
-
+    logger = setupLog.setupLogger('scraper', 'scraper.log')
+    logger.warning('JSON dumped to file successfully')
 
 def main():
+    logger = setupLog.setupLogger('main','main.log')
 
-    logger = setup_logger('main', 'main.log')
-
-    logger.info('Program Started')
+    logger.warning('\nProgram Started')
     scraper()
-    logger.info('Program Ended')
+    logger.warning('\nProgram Ended')
 
-    #Create the Logging File Handler
-#    logFH = logging.FileHandler("parser.log")
-#    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)    s')
-#    logFH.setFormatter(formatter)
-
-    #Add handler to logger object
-#    logger.addHandler(logFH)
-
-    #Execute Scripts
-#    logger.info("Program Started")
-#    scraper()
-#    logger.info("Program Ended")
-
-    scraper()
 
 if __name__ == "__main__":
+    #logger = setupLog.setupLogger('main', 'main.log')
+    #logger = logging.getLogger('main')
+    #logger.info('wat')
     main()
