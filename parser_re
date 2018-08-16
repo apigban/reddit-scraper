@@ -3,15 +3,38 @@
 #import re
 
 import json
+#import logging
+
+#logging.basicConfig(
+#        filename = "parser.log",
+#        format = "%(levelname)s:%(message)s",
+#        level = logging.DEBUG)
+
+#logger = logging.getLogger(__name__)
+
+
+# create a file handler
+#handler = logging.FileHandler("parser.log")
+#handler.setLevel(logging.INFO)
+
+# create a logging format
+#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#handler.setFormatter(formatter)
+
+#logger("YO")
+
 
 #def parseURL(apiURL):
 
 
 def stripNone(readData):
+    counter = 0
     for key, value in readData.items():
         if readData[key] is None:
-           readData[key] = "noValue"
-    return noneCount
+            readData[key] = "noValue"
+            counter += 1
+            logDefault("%s iteration, key=%s", counter, value)
+    return counter
 
 
 def countNone(value,readData):
@@ -37,12 +60,13 @@ def parseFile(fileName):
 
     with open(fileName) as jsonData:
         readData = json.load(jsonData)
-        #print(readData)
-    list(countNone(None, readData))
+#        logger("readData is of class s")
+
+    #list(countNone(None, readData))
     #print(readData)
         #readData = json.load(jsonData, object_hook = noneCounter)
         #print(f"Nonetype occured {noneCount} times")
-        #stripNone(readData)
+        stripNone(readData)
         #noneCounter(readData)
         #readData = stripNone(readData)
         #print(readData)
@@ -50,5 +74,5 @@ def parseFile(fileName):
 
 #myDict = stripNone(parseFile("dubai-submission-20180815.json"))
 #print(myDict)
-parseFile("dubai-submission-20180815.json")
+parseFile("dubai-submission-20180816.json")
 #my_dict = list(stripNone(parseFile("dubai-submission-20180815.json")))

@@ -3,6 +3,9 @@
 from datetime import datetime
 import argparse
 import time
+import logging
+
+module_logger = logging.getLogger("getInfo")
 
 
 def validDate(dateInput):
@@ -19,13 +22,18 @@ def toUnixTime(dateObject):
 
 
 def voteSorter(voteSort):
+
+    logger = logging.getLogger(__name__)
+
     if voteSort == "descending":
         voteSort = "desc"
-        print("\n" + 5*"-" + f"{voteSort} Sort\n")
+        logger.info("Using Descending Sort")
+        #print("\n" + 5*"-" + f"{voteSort} Sort\n")
         return voteSort
     else:
        voteSort = "asc"
-       print("\n" + 5*"-" + f"{voteSort} Sort\n")
+       logger.info("Using Ascending Sort")
+       #print("\n" + 5*"-" + f"{voteSort} Sort\n")
        return voteSort
 
 
@@ -106,6 +114,9 @@ def fetchInput():
    #print(argList)
     return argList
 
+#def main():
+
 
 #fetchInput()
-
+if __name__ == "main":
+    fetchInput()

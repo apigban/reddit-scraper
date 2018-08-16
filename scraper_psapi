@@ -1,9 +1,10 @@
 #!/usr/bin/env python3.7
 
-from getInfo import fetchInput
+import getInfo
 import requests
 import json
 import time
+import logging
 
 
 def fileOut(subreddit, contentType, response):
@@ -12,7 +13,7 @@ def fileOut(subreddit, contentType, response):
 
     with open(fileName, "a") as jsonFile:
         json.dump(response, jsonFile)
-    print(f"Write to {fileName} Successful")
+    print(5*"-" + f"Write to {fileName} Successful")
 
 
 def urlConstructor(subreddit, contentType, initial, final, voteSort):
@@ -40,14 +41,63 @@ def urlConstructor(subreddit, contentType, initial, final, voteSort):
 #    else:
 #        print("Default Input: Submissions\nUsing Submissions")
 
-def pullPSData(subreddit=None, contentType=None, initial=None, final=None, limit=None, voteSort=None):
+def scraper(subreddit=None, contentType=None, initial=None, final=None, limit=None, voteSort=None):
 
-    argList = fetchInput()
+    argList = getInfo.fetchInput()
 
     apiURL = urlConstructor(argList[0], argList[1], argList[2], argList[3], argList[5])
     response = requests.get(apiURL)
-    jsonData = json.loads(response.text)
-    #print(type(jsonData))
+    logger('info', "API Response")
+    jsonData = response.json()
+    #logger.info(5*"-", "Decoding json object")
+    #print(5*"-" + "API response processed..." "\n" + 5*"-" + "jsonData Loaded to memory...")
     fileOut(argList[0], argList[1], jsonData)
+    #print(5*"-" + "API response processed..." "\n" + 5*"-" + "jsonData Loaded to memory...")
 
-pullPSData()
+
+def logger(level, message):
+    log = logging.getLogger("scraper_psapi")
+    log.setLevel(logging.INFO)
+
+    #Create the Logging File Handler
+    logFH = logging.FileHandler("parser.log")
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)        s')
+    logFH.setFormatter(formatter)
+
+    #Add handler to logger object
+    log.addHandler(logFH)
+
+
+    if level == "info":
+        log.info(message)
+    elif level == "warning":
+        log.warning(message)
+    elif level == "error":
+        log.error(message)
+
+
+def main():
+    logger('info', 'Program Started')
+    scraper()
+    logger('info', 'Program Finished')
+
+
+#    logger = logging.getLogger("scraper_psapi")
+#    logger.setLevel(logging.INFO)
+
+    #Create the Logging File Handler
+#    logFH = logging.FileHandler("parser.log")
+#    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)    s')
+#    logFH.setFormatter(formatter)
+
+    #Add handler to logger object
+#    logger.addHandler(logFH)
+
+    #Execute Scripts
+#    logger.info("Program Started")
+#    scraper()
+#    logger.info("Program Ended")
+
+
+if __name__ == "__main__":
+    main()
