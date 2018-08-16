@@ -67,8 +67,8 @@ def fetchInput():
             '--content',
             type = str,
             help = 'Content to retrieve from reddit. Default: submissions \n For both submissions and comments use -all- ',
-            choices = ['submissions','comments','all'],
-            default = 'submissions',
+            choices = ['submission','comment','all'],
+            default = 'submission',
             required = True)
     parser.add_argument(
              '--limit',
@@ -107,5 +107,5 @@ def fetchInput():
     return argList
 
 
-fetchInput()
+#fetchInput()
 

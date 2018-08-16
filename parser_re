@@ -1,1 +1,54 @@
-import re
+#!/usr/bin/env python3.7
+
+#import re
+
+import json
+
+#def parseURL(apiURL):
+
+
+def stripNone(readData):
+    for key, value in readData.items():
+        if readData[key] is None:
+           readData[key] = "noValue"
+    return noneCount
+
+
+def countNone(value,readData):
+    #print(type(readData))
+
+    counter = 0
+    for key, value in readData.items():
+        if readData[key] is None:
+            counter =+ 1
+            readData[key] = "noVal"
+            print("1", key, value)
+            yield value
+        elif isinstance(value, dict):
+            for result in countNone(value, readData):
+                print("2", key, value)
+                yield result
+
+
+#    print(f"Nonetype occured {counter} times.")
+
+
+def parseFile(fileName):
+
+    with open(fileName) as jsonData:
+        readData = json.load(jsonData)
+        #print(readData)
+    list(countNone(None, readData))
+    #print(readData)
+        #readData = json.load(jsonData, object_hook = noneCounter)
+        #print(f"Nonetype occured {noneCount} times")
+        #stripNone(readData)
+        #noneCounter(readData)
+        #readData = stripNone(readData)
+        #print(readData)
+    return readData
+
+#myDict = stripNone(parseFile("dubai-submission-20180815.json"))
+#print(myDict)
+parseFile("dubai-submission-20180815.json")
+#my_dict = list(stripNone(parseFile("dubai-submission-20180815.json")))

@@ -3,16 +3,22 @@
 from getInfo import fetchInput
 import requests
 import json
+import time
 
 
-def fileOut(result):
-    with open("out.txt", "a") as file:
-        file.writelines(result)
+def fileOut(subreddit, contentType, response):
+    timeStr = time.strftime("%Y%m%d")
+    fileName = f"{subreddit}-{contentType}-{timeStr}.json"
+
+    with open(fileName, "a") as jsonFile:
+        json.dump(response, jsonFile)
+    print(f"Write to {fileName} Successful")
+
 
 def urlConstructor(subreddit, contentType, initial, final, voteSort):
 
     baseURL = "https://api.pushshift.io/reddit/search/"
-    apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}&metadata=True&pretty=True".format(contentType, subreddit, initial, final, voteSort)
+    apiURL = baseURL + "{0}/?subreddit={1}&before={2}&after{3}&sort_type=score&sort={4}&metadata=True".format(contentType, subreddit, initial, final, voteSort)
     print("\n" + 5*"-" + f"Loading URL:  {apiURL}\n")
     return apiURL
 
@@ -39,11 +45,9 @@ def pullPSData(subreddit=None, contentType=None, initial=None, final=None, limit
     argList = fetchInput()
 
     apiURL = urlConstructor(argList[0], argList[1], argList[2], argList[3], argList[5])
-    #print(apiURL)
-    req = json.loads(requests.get(apiURL).text)
-    #req = req.json()
-    #req = json.loads(req)
-    fileOut(str(req))
-    #print(req)
+    response = requests.get(apiURL)
+    jsonData = json.loads(response.text)
+    #print(type(jsonData))
+    fileOut(argList[0], argList[1], jsonData)
 
-pullPSData(fetchInput())
+pullPSData()
